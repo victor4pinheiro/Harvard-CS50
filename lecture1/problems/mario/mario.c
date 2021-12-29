@@ -4,8 +4,12 @@
 int main()
 {
     for (int i = 0; i < 8; i++) {
-        for (int j = 0; j <= i; j++) {
-            printf("#");
+        for (int j = 7; j >= 0; j--) {
+            if (j <= i) {
+                printf("#");
+            } else {
+                printf(" ");
+            }
         }
         printf("\n");
     }
