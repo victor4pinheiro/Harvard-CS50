@@ -1,0 +1,26 @@
+sort1 uses: Bubble Sort
+
+How do you know?: THE DIFFERENCE OF TIME BETWEEN RANDOM(50000 => 5.695), REVERSE (50000 => 4.103) AND SORTED (50000 => 0.090) ARE DIFFERENTE, ESPECIALLY ON BEST CASES, SO ANALYSING THE SORT50000'S TIME OF ALL ALGORITHMS INDICATES THAT BIG O AND BIG OMEGA ARE TOO MUCH DIFFERENT.
+-----------------RESULT---------------------
+        |   RANDOM  |   REVERSE |   SORTED  
+5000    |   0.087   |   0.076   |   0.041
+10000   |   0.242   |   0.205   |   0.028
+50000   |   5.695   |   4.103   |   0.090
+
+sort2 uses: Merge Sort
+
+How do you know?: THERE ARE NOT TOO MUCH DIFFERENCES IN ALL THE RESULTS, SO BIG O AND BIG OMEGA ARE SIMILAR.
+-----------------RESULT---------------------
+        |   RANDOM  |   REVERSE |   SORTED  
+5000    |   0.024   |   0.023   |   0.030
+10000   |   0.037   |   0.027   |   0.036
+50000   |   0.118   |   0.115   |   0.114
+
+sort3 uses: Selection Sort
+
+How do you know?: THE RESULTS OF BEST CASES AND WORST CASES ARE SIMILAR, BUT THEY ARE WORSER THAN RESULTS OF SORT2 WITH A DIFFERENCE OF 2 SECONDS.
+-----------------RESULT---------------------
+        |   RANDOM  |   REVERSE |   SORTED  
+5000    |   0.051   |   0.064   |   0.056
+10000   |   0.127   |   0.133   |   0.120
+50000   |   2.196   |   2.246   |   2.211
