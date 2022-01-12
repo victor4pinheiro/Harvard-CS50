@@ -181,7 +181,19 @@ bool is_cycle(int cycle_start, int loser)
 // Print the winner of the election when some pairs are tied
 void print_winner(void)
 {
-    //TODO
+    for (int i = 0; i < candidate_count; i++) {
+        int false_count = 0;
+
+        for (int j = 0; j < candidate_count; j++) {
+            if (locked[j][i] == false) {
+                false_count++;
+                if (false_count == candidate_count)
+                {
+                    printf("%s\n", candidates[i]);
+                }
+            }
+        }
+    }
 
     return;
 }
