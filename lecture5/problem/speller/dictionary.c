@@ -5,7 +5,6 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
-#include <sys/stat.h>
 
 #include "dictionary.h"
 
@@ -17,11 +16,14 @@ typedef struct node
 }
 node;
 
-// TODO: Choose number of buckets in hash table
-const unsigned int N = 26;
+// Number of buckets in hash table
+const unsigned int N = 223;
+
+// Number of words in dictionary
+int number_words = 0;
 
 // Hash table
-node *table[26];
+node *table[223];
 
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
@@ -40,44 +42,33 @@ unsigned int hash(const char *word)
 // Loads dictionary into memory, returning true if successful, else false
 bool load(const char *dictionary)
 {
-    // TODO
-    if (fopen("dictionaries/large", "r") == NULL)
+    if (dictionary == NULL)
         return false;
 
-    FILE *dictionary_file = fopen("./dictionaries/large", "r");
-    struct stat file;
-    stat("./dictionaries/large", &file);
+    FILE *filename = fopen(dictionary, "r");
+    char stream[LENGTH + 1] = "\0";
 
-    char *stream = malloc(file.st_size);
+    while(fscanf(filename, "%s", stream) != EOF) {
+        node *tmp = malloc(sizeof(node));
 
-    while(fscanf(dictionary_file, "%s", stream) != EOF) {
         if (malloc(sizeof(node)) == NULL)
             return false;
 
-        node *tmp = malloc(sizeof(node));
         strcpy(tmp->word, stream);
-        tmp->next = NULL;
-
         int index = hash(tmp->word);
-
-        do {
-            if (strcmp(table[index]->word, "\0") == 0) {
-                strcpy(table[index]->word, tmp->word);
-                table[index]->next = tmp->next;
-                break;
-            }
-        } while (strcmp(table[index]->word, "\0") != false);
+        tmp->next = table[index];
+        table[index] = tmp;
+        number_words++;
     }
 
-    fclose(dictionary_file);
-    return false;
+    fclose(filename);
+    return true;
 }
 
 // Returns number of words in dictionary if loaded, else 0 if not yet loaded
 unsigned int size(void)
 {
-    // TODO
-    return 0;
+    return number_words;
 }
 
 // Unloads dictionary from memory, returning true if successful, else false
