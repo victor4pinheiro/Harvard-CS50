@@ -1,6 +1,7 @@
 # Simulate a sports tournament
 
 import csv
+import math
 import sys
 import random
 
@@ -18,11 +19,19 @@ def main():
     with open(sys.argv[1], 'r') as filename:
         csv_file = csv.DictReader(filename)
         for row in csv_file:
-            row = [row['team'], int(row['rating'])]
             teams.append(row)
 
+    for team in teams:
+        team['rating'] = int(team['rating'])
+    
     counts = {}
-    # TODO: Simulate N tournaments and keep track of win counts
+    for i in range(N):
+        team_name = simulate_tournament(teams)
+        
+        if team_name in counts:
+            counts[team_name] += 1
+        else:
+            counts[team_name] = 1
 
     # Print each team's chances of winning, according to simulation
     for team in sorted(counts, key=lambda team: counts[team], reverse=True):
@@ -50,11 +59,14 @@ def simulate_round(teams):
 
     return winners
 
-
-def simulate_tournament(teams):
+def simulate_tournament(teams)-> str:
     """Simulate a tournament. Return name of winning team."""
-    # TODO
-
+    tmp_teams = teams
+    while (math.log2(len(tmp_teams)) != 0):
+        tmp_teams = simulate_round(tmp_teams)
+    
+    for index, element in enumerate(tmp_teams):
+        return element['team']
 
 if __name__ == "__main__":
     main()
