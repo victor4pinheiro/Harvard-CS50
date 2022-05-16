@@ -7,7 +7,7 @@ def main():
         # Code say to use print but it's non-sense. I can't let execute if params total is wrong.
         sys.exit("Usage: python dna.py data.csv sequence.txt")
 
-    # Get subsequence
+    # Get database
     database = []
     try:
         with open(sys.argv[1], 'r') as file:
@@ -17,25 +17,17 @@ def main():
     except FileNotFoundError as e:
         print(str(e))
 
-    number_columns = len(database[0])
+    number_columns = get_total_number_columns(database[0])
 
-    # Get sequence
-    firstline = ''
+    # Get sequence of DNA
+    sequence = ''
     try:
         with open(sys.argv[2], 'r') as file:
-            firstline = file.readline()
+            sequence = file.readline()
     except FileNotFoundError as e:
         print(str(e))
 
-    # Find longest match of each STR in DNA sequence
-    total_matches = []
-    header = database[0].keys()
-
-    for element in header:
-        if element != "name":
-            total_matches.append(longest_match(firstline, element))
-
-    # Check database for matching profiles
+    total_matches = find_all_longest_match(database, sequence)
     identified_person = get_name(database, total_matches, number_columns)
 
     if identified_person is None:
@@ -46,7 +38,25 @@ def main():
     return
 
 
+def get_total_number_columns(database: list[str]) -> int:
+    """Get total number of columns of CSV file"""
+    return len(database)
+
+
+def find_all_longest_match(database: list[str], sequence: str) -> list[int]:
+    """Return all longest match of each STR in DNA sequence"""
+    matches = []
+    header = database[0].keys()
+
+    for subsequence in header:
+        if subsequence != "name":
+            matches.append(longest_match(sequence, subsequence))
+
+    return matches
+
+
 def get_name(database: list[str], total_matches: list[int], number_columns: int) -> str | None:
+    """Check database for matching profiles and return if the name if it exist. If not, return None"""
     for person in database:
         count = 0
         for key, alleles in person.items():
@@ -60,7 +70,7 @@ def get_name(database: list[str], total_matches: list[int], number_columns: int)
     return None
 
 
-def longest_match(sequence, subsequence) -> int:
+def longest_match(sequence: str, subsequence: str) -> int:
     """Returns length of longest run of subsequence in sequence."""
 
     # Initialize variables
